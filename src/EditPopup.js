@@ -22,7 +22,7 @@ const EditPopup = ({ isOpen, onClose, onSave, existingService }) => {
     }
   }, [existingService]);
 
-  // ✅ Handle file upload (preview + validation)
+  // Handle file upload (preview + validation)
   const handleFileChange = (e) => {
     const uploaded = e.target.files[0];
     if (uploaded) {

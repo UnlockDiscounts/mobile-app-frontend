@@ -14,7 +14,7 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
 
     setLoading(true);
     try {
-      console.log("Provider ID being sent:", providerId); // 👈 debug
+      console.log("Provider ID being sent:", providerId);
       const res = await submitFeedback(providerId, stars, review, token);
       alert(res.message || "Feedback submitted successfully!");
       onClose();
@@ -42,8 +42,8 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
           className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 mb-4"
         />
 
-        <div className="flex items-center mb-6 ml-4">
-          <span className="mr-5 text-black font-medium">Rating</span>
+        <div className="flex items-center mb-6 ml-1">
+          <span className="mr-2 text-black font-medium">Rating</span>
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
@@ -57,13 +57,21 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
           ))}
         </div>
 
+        <div className="flex justify-end gap-3 mt-4">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 text-gray-600 font-semibold border border-gray-300 rounded-lg hover:bg-gray-100"
+          >
+          Cancel
+        </button>
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className="w-full bg-orange-400 text-white py-3 rounded-xl font-semibold shadow-md hover:bg-orange-500 disabled:opacity-50"
+          className="bg-orange-400 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-500 disabled:opacity-50"
         >
-          {loading ? "Submitting..." : "Submit Feedback"}
+        {loading ? "Submitting..." : "Submit"}
         </button>
+       </div>
       </div>
     </div>
   );

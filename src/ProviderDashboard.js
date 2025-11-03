@@ -82,9 +82,9 @@ const ProviderDashboard = () => {
       
       {/* Top Header */}
       <div className="bg-white p-5 flex justify-between items-center shadow-md mb-2">
-        <h1 className="text-3xl font-bold text-orange-500">Welcome Back,</h1>
+        <h1 className="text-2xl font-bold text-orange-500">Welcome Back,</h1>
         <div className="flex items-center gap-3">
-          <span className="font-medium text-2xl mr-4 text-gray-700">Full Name</span>
+          <span className="font-medium text-xl mr-0 text-gray-700">Full Name</span>
           <img
             src="/assets/profile.png"
             alt="Profile"

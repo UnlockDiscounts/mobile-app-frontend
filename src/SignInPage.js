@@ -19,6 +19,11 @@ export default function SignInPage() {
     }
 
     if (valid) {
+    // Save user details locally
+      localStorage.setItem("userName", fullName);
+      localStorage.setItem("userMobile", mobile);
+      localStorage.setItem("userAddress", address);
+
       console.log("Confirm clicked:", fullName, mobile, address);
       navigate("/password", { state: { fullName, mobile, address } });
     }

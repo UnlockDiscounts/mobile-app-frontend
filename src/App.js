@@ -19,6 +19,7 @@ import Individualservice from "./IndividualService";
 import PaymentProof from "./PaymentProof";
 import ProviderVerify from './ProviderVerify'
 import PasswordPage from "./password";
+import BookingForm from './BookingForm';
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
         <Route path="/individual-service" element={<Individualservice />} />
         <Route path="/payment-proof" element={<PaymentProof />} />
         <Route path="/provider-verify" element={<ProviderVerify />} />
+        <Route path="/booking-form" element={<BookingForm />} />
       </Routes>
     </Router>
   );
