@@ -1,11 +1,17 @@
-import api from "./api"; // use your axios instance
+import axios from "axios";
 
-export const submitFeedback = async (providerId, rating, comment) => {
-  const token = localStorage.getItem("accessToken");
+export const submitFeedback = async (providerId, stars, review, token, bookingId) => {
+  const userEmail = localStorage.getItem("userEmail");
 
-  const res = await api.post(
-    `/feedback/${providerId}`,
-    { rating, comment },
+  const res = await axios.post(
+    "http://localhost:3000/api/feedback",
+    {
+      bookingId,
+      providerId,
+      userEmail,
+      stars,
+      review,
+    },
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -13,10 +19,5 @@ export const submitFeedback = async (providerId, rating, comment) => {
     }
   );
 
-  return res.data;
-};
-
-export const getAverageFeedback = async (providerId) => {
-  const res = await api.get(`/feedback/averagefeedback/${providerId}`);
   return res.data;
 };

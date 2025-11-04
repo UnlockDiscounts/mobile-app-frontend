@@ -1,43 +1,91 @@
 import React, { useState, useEffect } from "react";
 
-const BookingForm = ({ onClose }) => {
+const BookingForm = ({ onClose, businessName, providerName, services, category }) => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
-  const [businessName, setBusinessName] = useState("");
   const [service, setService] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedPrice, setSelectedPrice] = useState("");
 
   useEffect(() => {
     const savedName = localStorage.getItem("userName") || "";
     const savedEmail = localStorage.getItem("userEmail") || "";
     const savedAddress = localStorage.getItem("userAddress") || "";
-    const savedBusiness = localStorage.getItem("userBusinessName") || "";
 
     setFullName(savedName);
     setEmail(savedEmail);
     setAddress(savedAddress);
-    setBusinessName(savedBusiness);
   }, []);
 
+  // When service is selected, auto set price
+  const handleServiceChange = (e) => {
+    const selectedServiceName = e.target.value;
+    setService(selectedServiceName);
+
+    const selected = services.find(
+      (item) => item.serviceName === selectedServiceName
+    );
+    if (selected) {
+      setSelectedPrice(selected.price);
+    } else {
+      setSelectedPrice("");
+    }
+  };
+
   const handleSubmit = async () => {
-    
+    // Validation
+    if (!fullName.trim()) return alert("Please enter your full name!");
+    if (!email.trim()) return alert("Please enter your email!");
+    if (!address.trim()) return alert("Please enter your address!");
+    if (!service) return alert("Please select a service!");
+
     setLoading(true);
     try {
       const bookingData = {
-        fullName,
-        email,
-        address,
+        fullName: fullName.trim(),
+        email: email.trim(),
+        address: address.trim(),
         businessName,
+        providerName,
         service,
+        price: selectedPrice,
+        category
       };
 
-      console.log("Booking submitted:", bookingData);
-      alert("Booking submitted successfully!");
-      onClose();
+      // POST request to backend
+      const response = await fetch("http://localhost:3000/api/booking/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Booking submitted successfully:", result);
+        
+        // Save email to localStorage for fetching bookings
+        if (email) {
+          localStorage.setItem("userEmail", email);
+        }
+        
+        alert("Booking confirmed! Thank you.");
+        onClose();
+        
+        // Redirect to bookings page after successful booking
+        setTimeout(() => {
+          window.location.href = "/bookings";
+        }, 500);
+      } else {
+        console.error("Backend error:", result);
+        alert(result.message || "Failed to submit booking. Please try again.");
+      }
     } catch (err) {
       console.error("Booking error:", err);
-      alert("Failed to submit booking.");
+      alert("Network error. Please check your connection and try again.");
     } finally {
       setLoading(false);
     }
@@ -66,8 +114,9 @@ const BookingForm = ({ onClose }) => {
           {/* Email */}
           <p className="text-black-600 mb-2 text-left text-sm">Email</p>
           <input
-            type="text"
+            type="email"
             value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
           />
@@ -87,9 +136,17 @@ const BookingForm = ({ onClose }) => {
           <input
             type="text"
             value={businessName}
-            onChange={(e) => setBusinessName(e.target.value)}
-            placeholder="Business Name"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
+            readOnly
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 cursor-not-allowed"
+          />
+
+          {/* Provider Name */}
+          <p className="text-black-600 mb-2 text-left text-sm">Provider Name</p>
+          <input
+            type="text"
+            value={providerName}
+            readOnly
+            className="w-full border border-gray-300 rounded-lg px-4 py-3 bg-gray-100 cursor-not-allowed"
           />
 
           {/* Services Requested */}
@@ -98,14 +155,23 @@ const BookingForm = ({ onClose }) => {
           </p>
           <select
             value={service}
-            onChange={(e) => setService(e.target.value)}
+            onChange={handleServiceChange}
             className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400"
           >
             <option value="">Select Service</option>
-            <option value="Service 1">Service 1</option>
-            <option value="Service 2">Service 2</option>
-            <option value="Service 3">Service 3</option>
+            {services && services.map((item) => (
+              <option key={item.serviceId} value={item.serviceName}>
+                {item.serviceName} — ₹{item.price}
+              </option>
+            ))}
           </select>
+
+          {/* Show price if service selected */}
+          {selectedPrice && (
+            <div className="mt-2 text-sm text-gray-700">
+              <strong>Price:</strong> ₹{selectedPrice}
+            </div>
+          )}
         </div>
 
         {/* Buttons */}

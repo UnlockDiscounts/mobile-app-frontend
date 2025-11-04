@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { submitFeedback } from "./utils/feedbackService";
 
-const FeedbackForm = ({ providerId, token, onClose }) => {
+const FeedbackForm = ({ providerId, token, bookingId, onClose }) => {
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -14,8 +14,9 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
 
     setLoading(true);
     try {
-      console.log("Provider ID being sent:", providerId);
-      const res = await submitFeedback(providerId, stars, review, token);
+      console.log("Submitting Feedback:", { providerId, bookingId, stars, review });
+
+      const res = await submitFeedback(providerId, stars, review, token, bookingId);
       alert(res.message || "Feedback submitted successfully!");
       onClose();
     } catch (err) {
@@ -27,11 +28,10 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
     }
   };
 
-
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
       <div className="bg-white w-full max-w-md rounded-xl p-6 mx-4">
-        <h3 className="text-[20px] font-medium text-black mb-4">
+        <h3 className="text-[20px] font-medium text-black mb-4 text-center">
           Share Your Feedback
         </h3>
 
@@ -39,15 +39,15 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
           placeholder="Write your review..."
           value={review}
           onChange={(e) => setReview(e.target.value)}
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 mb-4"
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-orange-400 mb-4 resize-none h-28"
         />
 
-        <div className="flex items-center mb-6 ml-1">
-          <span className="mr-2 text-black font-medium">Rating</span>
+        <div className="flex items-center justify-center mb-6">
+          <span className="mr-3 text-black font-medium">Your Rating:</span>
           {[1, 2, 3, 4, 5].map((star) => (
             <span
               key={star}
-              className={`text-3xl cursor-pointer ${
+              className={`text-3xl cursor-pointer transition-colors ${
                 star <= stars ? "text-orange-400" : "text-gray-300"
               }`}
               onClick={() => setStars(star)}
@@ -62,16 +62,17 @@ const FeedbackForm = ({ providerId, token, onClose }) => {
             onClick={onClose}
             className="px-4 py-2 text-gray-600 font-semibold border border-gray-300 rounded-lg hover:bg-gray-100"
           >
-          Cancel
-        </button>
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="bg-orange-400 text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:bg-orange-500 disabled:opacity-50"
-        >
-        {loading ? "Submitting..." : "Submit"}
-        </button>
-       </div>
+            Cancel
+          </button>
+
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className="bg-orange-400 text-white px-6 py-2 rounded-lg font-semibold shadow-md hover:bg-orange-500 disabled:opacity-50"
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        </div>
       </div>
     </div>
   );
