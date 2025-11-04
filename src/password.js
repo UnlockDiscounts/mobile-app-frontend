@@ -78,7 +78,7 @@ export default function PasswordPage() {
 
       localStorage.setItem("accessToken", loginRes.data.accessToken);
       localStorage.setItem("refreshToken", loginRes.data.refreshToken);
-
+      localStorage.setItem("userEmail", loginRes.data.user.email);
       // Inside handleContinue after login/signup success:
       setShowWelcomePopup(true);
       setTimeout(() => {
@@ -98,6 +98,7 @@ export default function PasswordPage() {
           console.log("Signup successful:", signupRes.data);
           localStorage.setItem("accessToken", signupRes.data.accessToken);
           localStorage.setItem("refreshToken", signupRes.data.refreshToken);
+          localStorage.setItem("userEmail", signupRes.data.user.email);
 
           setShowWelcomePopup(true);
           setTimeout(() => {
