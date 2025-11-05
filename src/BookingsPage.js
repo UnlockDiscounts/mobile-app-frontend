@@ -52,7 +52,7 @@ const BookingsPage = () => {
       console.log("Fetching bookings for email:", userEmail);
 
       const response = await fetch(
-        `http://localhost:3000/api/booking/user/${encodeURIComponent(
+        `https://mobile-app-backend-1-ntir.onrender.com/api/booking/user/${encodeURIComponent(
           userEmail
         )}`
       );

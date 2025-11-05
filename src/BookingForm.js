@@ -54,7 +54,7 @@ const BookingForm = ({ onClose, businessName, providerName, services, category }
       };
 
       // POST request to backend
-      const response = await fetch("http://localhost:3000/api/booking/create", {
+      const response = await fetch("https://mobile-app-backend-1-ntir.onrender.com/api/booking/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

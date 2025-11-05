@@ -86,7 +86,7 @@ const LandingPage = () => {
     const fetchServices = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/provider/services');
+        const response = await fetch('https://mobile-app-backend-1-ntir.onrender.com/api/provider/services');
         const data = await response.json();
         setAllServices(data);
         setLoading(false);

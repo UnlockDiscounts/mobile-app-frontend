@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const api = axios.create({
-  //baseURL: "https://mobile-app-backend-1-ntir.onrender.com/api",
-  baseURL: "http://localhost:3000/api",
+  baseURL: "https://mobile-app-backend-1-ntir.onrender.com/api",
+  //baseURL: "http://localhost:3000/api",
   withCredentials: true, // if using cookies
 });
 
