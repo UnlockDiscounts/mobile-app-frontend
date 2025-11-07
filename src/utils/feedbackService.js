@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const submitFeedback = async (providerId, stars, review, token, bookingId) => {
+export const submitFeedback = async (stars, review, token, bookingId) => {
   const userEmail = localStorage.getItem("userEmail");
 
   const res = await axios.post(

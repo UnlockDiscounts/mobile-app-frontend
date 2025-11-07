@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { submitFeedback } from "./utils/feedbackService";
 
-const FeedbackForm = ({ providerId, token, bookingId, onClose,userEmail }) => {
+const FeedbackForm = ({token, bookingId, onClose,userEmail }) => {
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [loading, setLoading] = useState(false);
