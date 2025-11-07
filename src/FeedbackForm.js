@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { submitFeedback } from "./utils/feedbackService";
 
-const FeedbackForm = ({ providerId, token, bookingId, onClose }) => {
+const FeedbackForm = ({ providerId, token, bookingId, onClose,userEmail }) => {
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -16,7 +16,7 @@ const FeedbackForm = ({ providerId, token, bookingId, onClose }) => {
     try {
       console.log("Submitting Feedback:", { providerId, bookingId, stars, review });
 
-      const res = await submitFeedback(providerId, stars, review, token, bookingId);
+      const res = await submitFeedback(providerId, stars, review, token, bookingId,userEmail);
       alert(res.message || "Feedback submitted successfully!");
       onClose();
     } catch (err) {
