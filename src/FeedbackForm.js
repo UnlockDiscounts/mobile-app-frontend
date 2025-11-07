@@ -14,9 +14,9 @@ const FeedbackForm = ({ providerId, token, bookingId, onClose,userEmail }) => {
 
     setLoading(true);
     try {
-      console.log("Submitting Feedback:", { providerId, bookingId, stars, review });
+      // console.log("Submitting Feedback:", { providerId, bookingId, stars, review });
 
-      const res = await submitFeedback(providerId, stars, review, token, bookingId,userEmail);
+      const res = await submitFeedback(stars, review, token, bookingId,userEmail);
       alert(res.message || "Feedback submitted successfully!");
       onClose();
     } catch (err) {
